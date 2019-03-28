@@ -5,7 +5,7 @@
       <p v-if="activeId === 'home'">Home</p>
       <p v-else-if="activeId === 'play'">Play</p>
       <p v-else-if="activeId === 'code'"><Code></Code></p>
-      <p v-else-if="activeId === 'settings'">Settings</p>
+      <p v-else-if="activeId === 'settings'"><Settings></Settings></p>
       <p v-else>Other</p>
     </div>
     <div>
@@ -22,10 +22,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Code from './components/Code.vue';
+import Settings from './components/Settings.vue';
 
 @Component({
   components: {
     Code,
+    Settings,
   },
 })
 export default class App extends Vue {
