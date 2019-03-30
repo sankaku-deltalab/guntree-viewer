@@ -13,6 +13,7 @@ export class GameManager {
       canvasElementId: '__anyId',
       pointerScope: ex.Input.PointerScope.Canvas,
       backgroundColor: ex.Color.DarkGray,
+      suppressConsoleBootMessage: true,
     });
     document.getElementById = originalGetter;
 
