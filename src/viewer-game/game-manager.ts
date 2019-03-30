@@ -2,7 +2,8 @@ import * as ex from 'excalibur';
 import * as mat from 'transformation-matrix';
 import { PlayerCharacter } from './player-character';
 import { EnemyCharacter } from './enemy-character';
-import { ISettings } from '../settings-interface';
+import { ISettings, IEnemySetting } from '../settings-interface';
+import { Muzzle } from './muzzle';
 
 export class GameManager {
   private game: ex.Engine;
@@ -58,17 +59,43 @@ export class GameManager {
   }
 
   public updateSetting(settings: ISettings): void {
-    // Update enemy
-    const loc = mat.applyToPoint(this.fieldTrans, settings.enemy.position);
-    this.enemy.x = loc.x;
-    this.enemy.y = loc.y;
-    this.enemy.rotation = settings.enemy.rotationDeg / 180 * Math.PI;
-
-    // Update muzzle
-    // TODO:
+    this.updateEnemySetting(settings.enemy);
   }
 
   // public updateGunTreeCode(code: string): void {}
+
+  private updateEnemySetting(setting: IEnemySetting): void {
+    // Update enemy
+    {
+      const loc = mat.applyToPoint(this.fieldTrans, setting.position);
+      this.enemy.x = loc.x;
+      this.enemy.y = loc.y;
+      this.enemy.rotation = setting.rotationDeg / 180 * Math.PI;
+    }
+
+    // Recreate muzzles
+    const enemyTrans = mat.transform(
+      mat.translate(this.enemy.x, this.enemy.y),
+      mat.rotate(this.enemy.rotation),
+    );
+    this.enemy.muzzles.map((mzl) => this.game.remove(mzl));
+    this.enemy.muzzles = setting.muzzles.map((muzzleSetting) => {
+      const loc = mat.applyToPoint(enemyTrans, muzzleSetting.position);
+      const size = Math.min(
+        this.game.halfDrawWidth,
+        this.game.halfCanvasHeight,
+      ) / 12;
+      const rotation = this.enemy.rotation + (muzzleSetting.rotationDeg / 180 * Math.PI);
+      const muzzle = new Muzzle({
+        rotation,
+        width: size,
+        height: size,
+        ...loc,
+      });
+      this.game.add(muzzle);
+      return muzzle;
+    });
+  }
 
   private createField(): ex.Actor {
     const loc = mat.applyToPoint(this.fieldTrans, { x: 0.5, y: 0.5 });
