@@ -1,9 +1,11 @@
 <template>
   <v-card height="100vh" flat>
-    <p v-if="activeId === 'home'">Home</p>
-    <p v-else-if="activeId === 'play'">Play</p>
-    <Code v-else-if="activeId === 'code'"></Code>
-    <Settings v-else-if="activeId === 'settings'"></Settings>
+    <v-content>
+      <p v-if="activeId === 'home'">Home</p>
+      <p v-else-if="activeId === 'play'">Play</p>
+      <Code v-else-if="activeId === 'code'"></Code>
+      <Settings v-else-if="activeId === 'settings'"></Settings>
+    </v-content>
 
     <v-bottom-nav :active.sync="activeId" :value="true" absolute color="transparent">
       <v-btn color="teal" flat value="home">
