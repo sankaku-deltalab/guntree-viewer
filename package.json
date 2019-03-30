@@ -12,6 +12,7 @@
     "excalibur": "^0.21.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
+    "toml": "^3.0.0",
     "transformation-matrix": "1.14.1",
     "vue": "^2.6.6",
     "vue-class-component": "^6.0.0",
