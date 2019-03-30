@@ -17,10 +17,21 @@ export class GameManager {
     document.getElementById = originalGetter;
 
     // Create player
-    // TODO:
+    const pc = new PlayerCharacter();
+    pc.x = this.game.halfDrawWidth;
+    pc.y = this.game.halfDrawHeight * 1.5;
+    const pcSize = Math.min(
+      this.game.halfDrawWidth / 10,
+      this.game.halfCanvasHeight / 10,
+    );
+    pc.setWidth(pcSize);
+    pc.setHeight(pcSize);
+    this.game.add(pc);
 
-    // Create enemy
-    // TODO:
+    // // Create enemy
+    // // TODO:
+
+    this.game.start();
   }
 
   public updateSetting(setting: {[key: string]: any}): void {}
