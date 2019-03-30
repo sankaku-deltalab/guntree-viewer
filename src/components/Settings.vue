@@ -1,18 +1,20 @@
 <template>
-  <md-field>
-    <label>Write Setting as toml</label>
-    <md-textarea class="settings-area" v-model="settingsAsToml" md-autogrow></md-textarea>
-  </md-field>
+  <v-textarea
+    v-model="settingsAsToml"
+    rows=30
+    flat
+  ></v-textarea>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
+// TODO: Fix textarea height
 @Component({
   components: {
   },
 })
-export default class Code extends Vue {
+export default class Settings extends Vue {
   private settingsAsToml: string = `[setting.enemy]
 position = { x: 50, y: 25 },  // area size: 100 x 100
 angleDeg = 90,  // clockwise, 0: right direction
@@ -36,7 +38,4 @@ angleDeg = 0,
 </script>
 
 <style lang="scss" scoped>
-  .settings-area {
-    max-height: 100vh;  // TODO: Fix max height
-  }
 </style>

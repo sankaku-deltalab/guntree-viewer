@@ -1,22 +1,33 @@
 <template>
-  <div class="wrapper">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
-    <div>
-      <p v-if="activeId === 'home'">Home</p>
-      <p v-else-if="activeId === 'play'">Play</p>
-      <p v-else-if="activeId === 'code'"><Code></Code></p>
-      <p v-else-if="activeId === 'settings'"><Settings></Settings></p>
-      <p v-else>Other</p>
-    </div>
-    <div>
-      <md-bottom-bar class="phone-viewport" md-sync-route @md-changed="onBarSelectionChanged">
-        <md-bottom-bar-item id="home" md-label="Home" md-icon="home"></md-bottom-bar-item>
-        <md-bottom-bar-item id="play" md-label="Play" md-icon="play_arrow"></md-bottom-bar-item>
-        <md-bottom-bar-item id="code" md-label="Code" md-icon="code"></md-bottom-bar-item>
-        <md-bottom-bar-item id="settings" md-label="Settings" md-icon="settings"></md-bottom-bar-item>
-      </md-bottom-bar>
-    </div>
-  </div>
+  <v-card height="100vh" flat>
+    <p v-if="activeId === 'home'">Home</p>
+    <p v-else-if="activeId === 'play'">Play</p>
+    <Code v-else-if="activeId === 'code'"></Code>
+    <Settings v-else-if="activeId === 'settings'"></Settings>
+
+    <v-bottom-nav :active.sync="activeId" :value="true" absolute color="transparent">
+      <v-btn color="teal" flat value="home">
+        <span>Home</span>
+        <v-icon>home</v-icon>
+      </v-btn>
+
+      <v-btn color="teal" flat value="play">
+        <span>Play</span>
+        <v-icon>play_arrow</v-icon>
+      </v-btn>
+
+      <v-btn color="teal" flat value="code">
+        <span>Code</span>
+        <v-icon>code</v-icon>
+      </v-btn>
+
+      <v-btn color="teal" flat value="settings">
+        <span>Settings</span>
+        <v-icon>settings</v-icon>
+      </v-btn>
+
+    </v-bottom-nav>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -32,28 +43,25 @@ import Settings from './components/Settings.vue';
 })
 export default class App extends Vue {
   private activeId: string = 'home';
+  private contentSize: string = '10vh';
 
-  public onBarSelectionChanged(activeId: string) {
+  public onBarSelectionChanged(activeId: string): void {
     this.activeId = activeId;
   }
+
+  // public mounted() {
+  //   this.contentSize = this.getContentSize();
+  // }
+
+  // public getContentSize(): string {
+  //   const wrapper = this.$refs.wrapper as Vue | undefined;
+  //   const bottomNav = this.$refs.bottomNav as Vue;
+  //   if (wrapper === undefined) { return '100vh'; }
+  //   const height = wrapper.$el.clientHeight - bottomNav.$el.clientHeight;
+  //   return `${height}px`;
+  // }
 }
 </script>
 
 <style lang="scss" scoped>
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  .phone-viewport {
-    width: 100%;
-    height: auto;
-    display: inline-flex;
-    align-items: center;
-    overflow: hidden;
-    border: 1px solid rgba(#000, .26);
-    background: rgba(#000, .06);
-    position: absolute;
-    bottom: 0;
-  }
 </style>

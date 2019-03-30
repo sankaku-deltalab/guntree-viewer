@@ -1,13 +1,15 @@
 <template>
-  <md-field>
-    <label>Write Guntree</label>
-    <md-textarea class="code-area" v-model="code" md-autogrow></md-textarea>
-  </md-field>
+  <v-textarea
+    v-model="code"
+    rows=30
+    flat
+  ></v-textarea>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
+// TODO: Fix textarea height
 @Component({
   components: {
   },
@@ -26,7 +28,4 @@ export default class Code extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  .code-area {
-    max-height: 100vh;  // TODO: Fix max height
-  }
 </style>
