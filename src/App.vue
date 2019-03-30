@@ -2,7 +2,7 @@
   <v-app>
     <v-content>
       <p v-if="activeId === 'home'">Home</p>
-      <p v-else-if="activeId === 'play'">Play</p>
+      <Viewer v-else-if="activeId === 'play'"></Viewer>
       <TextEditor v-else-if="activeId === 'code'" key="code" :initialText="initialCode" v-on:change="updateCode"></TextEditor>
       <TextEditor v-else-if="activeId === 'settings'" key="settings" :initialText="initialSettings" v-on:change="updateSettings"></TextEditor>
     </v-content>
@@ -34,10 +34,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import Viewer from './components/Viewer.vue';
 import TextEditor from './components/TextEditor.vue';
 
 @Component({
   components: {
+    Viewer,
     TextEditor,
   },
 })
