@@ -1,35 +1,37 @@
 <template>
-  <v-card height="100vh" flat>
-    <v-content>
-      <p v-if="activeId === 'home'">Home</p>
-      <p v-else-if="activeId === 'play'">Play</p>
-      <Code v-else-if="activeId === 'code'"></Code>
-      <Settings v-else-if="activeId === 'settings'"></Settings>
-    </v-content>
+  <v-app>
+    <v-card height="100vh" flat>
+      <v-content>
+        <p v-if="activeId === 'home'">Home</p>
+        <p v-else-if="activeId === 'play'">Play</p>
+        <Code v-else-if="activeId === 'code'"></Code>
+        <Settings v-else-if="activeId === 'settings'"></Settings>
+      </v-content>
 
-    <v-bottom-nav :active.sync="activeId" :value="true" absolute color="transparent">
-      <v-btn color="teal" flat value="home">
-        <span>Home</span>
-        <v-icon>home</v-icon>
-      </v-btn>
+      <v-bottom-nav :active.sync="activeId" :value="true" absolute color="transparent">
+        <v-btn color="teal" flat value="home">
+          <span>Home</span>
+          <v-icon>home</v-icon>
+        </v-btn>
 
-      <v-btn color="teal" flat value="play">
-        <span>Play</span>
-        <v-icon>play_arrow</v-icon>
-      </v-btn>
+        <v-btn color="teal" flat value="play">
+          <span>Play</span>
+          <v-icon>play_arrow</v-icon>
+        </v-btn>
 
-      <v-btn color="teal" flat value="code">
-        <span>Code</span>
-        <v-icon>code</v-icon>
-      </v-btn>
+        <v-btn color="teal" flat value="code">
+          <span>Code</span>
+          <v-icon>code</v-icon>
+        </v-btn>
 
-      <v-btn color="teal" flat value="settings">
-        <span>Settings</span>
-        <v-icon>settings</v-icon>
-      </v-btn>
+        <v-btn color="teal" flat value="settings">
+          <span>Settings</span>
+          <v-icon>settings</v-icon>
+        </v-btn>
 
-    </v-bottom-nav>
-  </v-card>
+      </v-bottom-nav>
+    </v-card>
+  </v-app>
 </template>
 
 <script lang="ts">
