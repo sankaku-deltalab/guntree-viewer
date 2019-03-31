@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <v-content>
-      <p v-if="activeId === 'home'">Home</p>
-      <Viewer v-else-if="activeId === 'play'"></Viewer>
-      <TextEditor v-else-if="activeId === 'code'" key="code" :initialText="initialCode" v-on:change="updateCode"></TextEditor>
-      <TextEditor v-else-if="activeId === 'settings'" key="settings" :initialText="initialSettings" v-on:change="updateSettings"></TextEditor>
+      <p v-show="activeId === 'home'">Home</p>
+      <Viewer v-show="activeId === 'play'" ref="viewer"></Viewer>
+      <TextEditor v-show="activeId === 'code'" key="code" :initialText="code" v-on:change="updateCode"></TextEditor>
+      <TextEditor v-show="activeId === 'settings'" key="settings" :initialText="settings" v-on:change="updateSettings"></TextEditor>
     </v-content>
 
-    <v-bottom-nav :active.sync="activeId" :value="true" app fixed color="transparent">
+    <v-bottom-nav :active.sync="activeId" v-on:update:active="onNavChanged" :value="true" app fixed color="transparent">
       <v-btn color="teal" flat value="home">
         <span>Home</span>
         <v-icon>home</v-icon>
@@ -46,7 +46,7 @@ import TextEditor from './components/TextEditor.vue';
 export default class App extends Vue {
   private activeId: string = 'home';
   private contentSize: string = '10vh';
-  private initialCode: string = `concat(
+  private code: string = `concat(
   setMuzzle('center-muzzle'),
   attachVirtualMuzzle(aimingMuzzle()),
   repeat(
@@ -55,24 +55,24 @@ export default class App extends Vue {
   ),
 );
 `;
-  private initialSettings: string = `[setting.enemy]
-position = { x: 50, y: 25 },  // area size: 100 x 100
-angleDeg = 90,  // clockwise, 0: right direction
+  private settings: string = `[setting.enemy]
+position = { x = 0.5, y = 0.25 }  # area size: 1.0 x 1.0
+rotationDeg = 90  # clockwise, 0: right direction
 
-[[setting.enemy.muzzle]]
-name = 'center-muzzle',
-position = { x: 0, y: -5 },  // relative
-angleDeg = 0,
+[[setting.enemy.muzzles]]
+name = 'center-muzzle'
+position = { x = 0.1, y = 0 }  # relative to enemy. x: front, y: right
+rotationDeg = 0
 
-[[setting.enemy.muzzle]]
-name = 'right-muzzle',
-position = { x: 30, y: 5 },
-angleDeg = 0,
+[[setting.enemy.muzzles]]
+name = 'right-muzzle'
+position = { x = -0.1, y = 0.2 }
+rotationDeg = 0
 
-[[setting.enemy.muzzle]]
-name = 'left-muzzle',
-position = { x: -30, y: 5 },
-angleDeg = 0,
+[[setting.enemy.muzzles]]
+name = 'left-muzzle'
+position = { x = -0.1, y = -0.2 }
+rotationDeg = 0
 `;
 
   constructor() {
@@ -84,7 +84,14 @@ angleDeg = 0,
   }
 
   public updateSettings(newSettings: string): void {
-    console.log('settings updated');
+    this.settings = newSettings;
+  }
+
+  private onNavChanged(newId: string): void {
+    // Apply setting when viewer was open
+    if (newId === 'play') {
+      (this.$refs.viewer as Viewer).updateSettings(this.settings);
+    }
   }
 }
 </script>

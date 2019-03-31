@@ -7,6 +7,7 @@ import { Muzzle } from './muzzle';
 
 export class GameManager {
   private game: ex.Engine;
+  private fieldUnit: number;
   private fieldTrans: mat.Matrix;
   private playerCharacter: PlayerCharacter;
   private enemy: EnemyCharacter;
@@ -30,17 +31,17 @@ export class GameManager {
       // leftUpper: { x: 0, y: 0 }
       // rightUpper: { x: 1, y: 0 }
       // rightUnder: { x: 1, y: 1 }
-      const fieldUnit = Math.min(
+      this.fieldUnit = Math.min(
         canvas.height,
         canvas.width,
       );
       const offset = {
-        x: (canvas.width - fieldUnit) / 2,
-        y: (canvas.height - fieldUnit) / 2,
+        x: (canvas.width - this.fieldUnit) / 2,
+        y: (canvas.height - this.fieldUnit) / 2,
       };
       this.fieldTrans = mat.transform(
         mat.translate(offset.x, offset.y),
-        mat.scale(fieldUnit),
+        mat.scale(this.fieldUnit),
       );
     }
 
@@ -58,7 +59,7 @@ export class GameManager {
     this.game.start();
   }
 
-  public updateSetting(settings: ISettings): void {
+  public updateSettings(settings: ISettings): void {
     this.updateEnemySetting(settings.enemy);
   }
 
@@ -77,6 +78,7 @@ export class GameManager {
     const enemyTrans = mat.transform(
       mat.translate(this.enemy.x, this.enemy.y),
       mat.rotate(this.enemy.rotation),
+      mat.scale(this.fieldUnit),
     );
     this.enemy.muzzles.map((mzl) => this.game.remove(mzl));
     this.enemy.muzzles = setting.muzzles.map((muzzleSetting) => {

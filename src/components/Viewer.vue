@@ -4,7 +4,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import * as toml from 'toml';
 import { GameManager } from '../viewer-game/game-manager';
+import { ISettings } from '../settings-interface';
 
 @Component({
   components: {
@@ -24,6 +26,12 @@ export default class Viewer extends Vue {
     this.canvas.height = h - 100;  // TODO: Fix canvas size
     this.gameManager = new GameManager(this.canvas);
   }
+
+  public updateSettings(settingsAsToml: string): void {
+    this.gameManager.updateSettings(toml.parse(settingsAsToml).setting as ISettings);
+  }
+
+  // public updateGunTreeCode(code: string): void {}
 }
 </script>
 
