@@ -3,7 +3,6 @@ import * as mat from 'transformation-matrix';
 import { PlayerCharacter } from './player-character';
 import { EnemyCharacter } from './enemy-character';
 import { ISettings, IEnemySetting } from '../settings-interface';
-import { Muzzle } from './muzzle';
 import { evalGunTree } from './guntree-evaluator';
 
 export class GameManager {
@@ -71,36 +70,12 @@ export class GameManager {
 
   private updateEnemySetting(setting: IEnemySetting): void {
     // Update enemy
-    {
-      const loc = mat.applyToPoint(this.fieldTrans, setting.position);
-      this.enemy.x = loc.x;
-      this.enemy.y = loc.y;
-      this.enemy.rotation = setting.rotationDeg / 180 * Math.PI;
-    }
+    const loc = mat.applyToPoint(this.fieldTrans, setting.position);
+    this.enemy.x = loc.x;
+    this.enemy.y = loc.y;
+    this.enemy.rotation = setting.rotationDeg / 180 * Math.PI;
 
-    // Recreate muzzles
-    const enemyTrans = mat.transform(
-      mat.translate(this.enemy.x, this.enemy.y),
-      mat.rotate(this.enemy.rotation),
-      mat.scale(this.fieldUnit),
-    );
-    this.enemy.muzzles.map((mzl) => this.game.remove(mzl));
-    this.enemy.muzzles = setting.muzzles.map((muzzleSetting) => {
-      const loc = mat.applyToPoint(enemyTrans, muzzleSetting.position);
-      const size = Math.min(
-        this.game.halfDrawWidth,
-        this.game.halfCanvasHeight,
-      ) / 12;
-      const rotation = this.enemy.rotation + (muzzleSetting.rotationDeg / 180 * Math.PI);
-      const muzzle = new Muzzle({
-        rotation,
-        width: size,
-        height: size,
-        ...loc,
-      });
-      this.game.add(muzzle);
-      return muzzle;
-    });
+    this.enemy.updateMuzzles(setting.muzzles, this.game, this.fieldUnit);
   }
 
   private createField(): ex.Actor {
