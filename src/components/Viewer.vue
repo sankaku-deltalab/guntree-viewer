@@ -31,7 +31,9 @@ export default class Viewer extends Vue {
     this.gameManager.updateSettings(toml.parse(settingsAsToml).setting as ISettings);
   }
 
-  // public updateGunTreeCode(code: string): void {}
+  public updateGunTreeCode(code: string): void {
+    this.gameManager.updateGunTreeCode(code);
+  }
 }
 </script>
 

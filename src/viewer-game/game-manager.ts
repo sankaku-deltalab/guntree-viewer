@@ -4,6 +4,7 @@ import { PlayerCharacter } from './player-character';
 import { EnemyCharacter } from './enemy-character';
 import { ISettings, IEnemySetting } from '../settings-interface';
 import { Muzzle } from './muzzle';
+import { evalGunTree } from './guntree-evaluator';
 
 export class GameManager {
   private game: ex.Engine;
@@ -63,7 +64,10 @@ export class GameManager {
     this.updateEnemySetting(settings.enemy);
   }
 
-  // public updateGunTreeCode(code: string): void {}
+  public updateGunTreeCode(code: string): void {
+    const gt = evalGunTree(code);
+    this.enemy.setGuntree(gt);
+  }
 
   private updateEnemySetting(setting: IEnemySetting): void {
     // Update enemy

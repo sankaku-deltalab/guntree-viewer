@@ -1,4 +1,5 @@
 import * as ex from 'excalibur';
+import { IGun } from 'guntree';
 import { Muzzle } from './muzzle';
 
 export class EnemyCharacter extends ex.Actor {
@@ -9,5 +10,9 @@ export class EnemyCharacter extends ex.Actor {
     this.collisionType = ex.CollisionType.Passive;
     this.color = ex.Color.Magenta;
     this.muzzles = [];
+  }
+
+  public setGuntree(gun: IGun): void {
+    // TODO: Implement
   }
 }
