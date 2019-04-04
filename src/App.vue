@@ -47,11 +47,11 @@ export default class App extends Vue {
   private activeId: string = 'home';
   private contentSize: string = '10vh';
   private code: string = `concat(
-  setMuzzle('center-muzzle'),
-  attachVirtualMuzzle(aimingMuzzle()),
+  useMuzzle('center-muzzle'),
+  useVirtualMuzzle(aimingMuzzle()),
   repeat(
     { times: 10, interval: 4 },
-    fire(bullet()),
+    fire({}),
   ),
 );
 `;
@@ -80,7 +80,7 @@ rotationDeg = 0
   }
 
   public updateCode(newCode: string): void {
-    console.log('code updated');
+    this.code = newCode;
   }
 
   public updateSettings(newSettings: string): void {
@@ -88,8 +88,9 @@ rotationDeg = 0
   }
 
   private onNavChanged(newId: string): void {
-    // Apply setting when viewer was open
+    // Apply setting and code when viewer was open
     if (newId === 'play') {
+      (this.$refs.viewer as Viewer).updateGunTreeCode(this.code);
       (this.$refs.viewer as Viewer).updateSettings(this.settings);
     }
   }
