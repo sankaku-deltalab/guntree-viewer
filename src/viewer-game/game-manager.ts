@@ -7,7 +7,6 @@ import { evalGunTree } from './guntree-evaluator';
 
 export class GameManager {
   private game: ex.Engine;
-  private fieldUnit: number;
   private field: Field;
   private playerCharacter: PlayerCharacter;
   private enemy: EnemyCharacter;
@@ -27,16 +26,10 @@ export class GameManager {
     document.getElementById = originalGetter;
 
     // Create game coordinates
-    {
-      // leftUpper: { x: 0, y: 0 }
-      // rightUpper: { x: 1, y: 0 }
-      // rightUnder: { x: 1, y: 1 }
-      this.fieldUnit = Math.min(
-        canvas.height,
-        canvas.width,
-      );
-      this.field = new Field({ x: canvas.width, y: canvas.height });
-    }
+    // leftUpper: { x: 0, y: 0 }
+    // rightUpper: { x: 1, y: 0 }
+    // rightUnder: { x: 1, y: 1 }
+    this.field = new Field({ x: canvas.width, y: canvas.height });
 
     // Draw field area
     this.game.add(this.createField());
@@ -48,6 +41,35 @@ export class GameManager {
     // Add enemy
     this.enemy = this.createEnemyCharacter(this.playerCharacter);
     this.game.add(this.enemy);
+
+    // Press space to play
+    this.game.input.keyboard.on('press', (event) => {
+      if (event === undefined) { return; }
+      if (event.key === ex.Input.Keys.Space) {
+        this.enemy.startFiring();
+      }
+    });
+
+    // Press WASD to move
+    this.game.input.keyboard.on('hold', (event) => {
+      if (event === undefined) { return; }
+
+      const input = { x: 0, y: 0 };
+      if (event.key === ex.Input.Keys.W) {
+        input.y -= 1;
+      }
+      if (event.key === ex.Input.Keys.D) {
+        input.x += 1;
+      }
+      if (event.key === ex.Input.Keys.S) {
+        input.y += 1;
+      }
+      if (event.key === ex.Input.Keys.A) {
+        input.x -= 1;
+      }
+
+      this.playerCharacter.addInput(input);
+    });
 
     this.game.start();
   }
