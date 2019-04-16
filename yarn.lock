@@ -7801,10 +7801,10 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-transformation-matrix@1.14.1:
-  version "1.14.1"
-  resolved "https://registry.yarnpkg.com/transformation-matrix/-/transformation-matrix-1.14.1.tgz#28be6a49bc2697665615813fb22e83bc8157d45b"
-  integrity sha512-zbfndGg//cMW4aytXuF4dkBuUu/SUBA94U2zkmDoRwcplS9hCCn/S3VDp4A7CXw5tVxeCm9F6zdfHzWzei6nXg==
+transformation-matrix@^1.15.3:
+  version "1.15.3"
+  resolved "https://registry.yarnpkg.com/transformation-matrix/-/transformation-matrix-1.15.3.tgz#f47e42f7fbfe6869f2b662fb1518af08b36f360c"
+  integrity sha512-ThJH58GNFKhCw3gIoOtwf3tNwuYjbyEeiGdeq4mNMYWdJctnI896KUqn6PVt7jmNVepqa1bcKQtnMB1HtjsDMA==
 
 trim-newlines@^1.0.0:
   version "1.0.0"
