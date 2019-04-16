@@ -1,5 +1,5 @@
 import * as ex from 'excalibur';
-import * as mat from 'transformation-matrix';
+import { Field } from './field';
 import { PlayerCharacter } from './player-character';
 import { EnemyCharacter } from './enemy-character';
 import { ISettings, IEnemySetting } from '../settings-interface';
@@ -8,7 +8,7 @@ import { evalGunTree } from './guntree-evaluator';
 export class GameManager {
   private game: ex.Engine;
   private fieldUnit: number;
-  private fieldTrans: mat.Matrix;
+  private field: Field;
   private playerCharacter: PlayerCharacter;
   private enemy: EnemyCharacter;
 
@@ -35,14 +35,7 @@ export class GameManager {
         canvas.height,
         canvas.width,
       );
-      const offset = {
-        x: (canvas.width - this.fieldUnit) / 2,
-        y: (canvas.height - this.fieldUnit) / 2,
-      };
-      this.fieldTrans = mat.transform(
-        mat.translate(offset.x, offset.y),
-        mat.scale(this.fieldUnit),
-      );
+      this.field = new Field({ x: canvas.width, y: canvas.height });
     }
 
     // Draw field area
@@ -53,7 +46,7 @@ export class GameManager {
     this.game.add(this.playerCharacter);
 
     // Add enemy
-    this.enemy = this.createEnemyCharacter();
+    this.enemy = this.createEnemyCharacter(this.playerCharacter);
     this.game.add(this.enemy);
 
     this.game.start();
@@ -70,47 +63,47 @@ export class GameManager {
 
   private updateEnemySetting(setting: IEnemySetting): void {
     // Update enemy
-    const loc = mat.applyToPoint(this.fieldTrans, setting.position);
+    const loc = this.field.fieldToCanvasPoint(setting.position);
     this.enemy.x = loc.x;
     this.enemy.y = loc.y;
     this.enemy.rotation = setting.rotationDeg / 180 * Math.PI;
 
-    this.enemy.updateMuzzles(setting.muzzles, this.game, this.fieldUnit);
+    this.enemy.updateMuzzles(setting.muzzles, this.game, this.field);
   }
 
   private createField(): ex.Actor {
-    const loc = mat.applyToPoint(this.fieldTrans, { x: 0.5, y: 0.5 });
-    const size = mat.applyToPoint(this.fieldTrans, { x: 1, y: 1 });
+    const loc = this.field.fieldToCanvasPoint({ x: 0, y: 0 });
+    const size = this.field.scale;
     return new ex.Actor({
-      width: size.x,
-      height: size.y,
+      width: size,
+      height: size,
       color: ex.Color.White,
       ...loc,
     });
   }
 
   private createPlayerCharacter(): PlayerCharacter {
-    const loc = mat.applyToPoint(this.fieldTrans, { x: 0.5, y: 0.75 });
+    const loc = this.field.fieldToCanvasPoint({ x: -0.25, y: 0 });
     const size = Math.min(
       this.game.halfDrawWidth,
       this.game.halfCanvasHeight,
     ) / 10;
     return new PlayerCharacter({
-      rotation: -Math.PI / 2,
+      rotation: 0,
       width: size,
       height: size,
       ...loc,
     });
   }
 
-  private createEnemyCharacter(): EnemyCharacter {
-    const loc = mat.applyToPoint(this.fieldTrans, { x: 0.5, y: 0.25 });
+  private createEnemyCharacter(target: PlayerCharacter): EnemyCharacter {
+    const loc = this.field.fieldToCanvasPoint({ x: 0.25, y: 0 });
     const size = Math.min(
       this.game.halfDrawWidth,
       this.game.halfCanvasHeight,
     ) / 5;
-    return new EnemyCharacter({
-      rotation: Math.PI / 2,
+    return new EnemyCharacter(this.field, target, {
+      rotation: 0,
       width: size,
       height: size,
       ...loc,

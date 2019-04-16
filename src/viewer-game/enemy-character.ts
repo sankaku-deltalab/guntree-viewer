@@ -3,6 +3,7 @@ import * as mat from 'transformation-matrix';
 import { IGun, IPlayer, IMuzzle, Player } from 'guntree';
 import { Muzzle } from './muzzle';
 import { IMuzzleSetting } from '../settings-interface';
+import { Field } from './field';
 
 export class EnemyCharacter extends ex.Actor {
   public muzzles: Muzzle[];
@@ -10,7 +11,7 @@ export class EnemyCharacter extends ex.Actor {
   private stockedSeconds: number;
   private frameSeconds: number;
 
-  constructor(config?: ex.IActorArgs) {
+  constructor(private readonly field: Field, config?: ex.IActorArgs) {
     super(config);
     this.collisionType = ex.CollisionType.Passive;
     this.color = ex.Color.Magenta;
