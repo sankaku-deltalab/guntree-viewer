@@ -3,11 +3,28 @@
     <v-content>
       <p v-show="activeId === 'home'">Home</p>
       <Viewer v-show="activeId === 'play'" ref="viewer"></Viewer>
-      <TextEditor v-show="activeId === 'code'" key="code" :initialText="code" v-on:change="updateCode"></TextEditor>
-      <TextEditor v-show="activeId === 'settings'" key="settings" :initialText="settings" v-on:change="updateSettings"></TextEditor>
+      <TextEditor
+        v-show="activeId === 'code'"
+        key="code"
+        :initialText="code"
+        v-on:change="updateCode"
+      ></TextEditor>
+      <TextEditor
+        v-show="activeId === 'settings'"
+        key="settings"
+        :initialText="settings"
+        v-on:change="updateSettings"
+      ></TextEditor>
     </v-content>
 
-    <v-bottom-nav :active.sync="activeId" v-on:update:active="onNavChanged" :value="true" app fixed color="transparent">
+    <v-bottom-nav
+      :active.sync="activeId"
+      v-on:update:active="onNavChanged"
+      :value="true"
+      app
+      fixed
+      color="transparent"
+    >
       <v-btn color="teal" flat value="home">
         <span>Home</span>
         <v-icon>home</v-icon>
@@ -27,7 +44,6 @@
         <span>Settings</span>
         <v-icon>settings</v-icon>
       </v-btn>
-
     </v-bottom-nav>
   </v-app>
 </template>
@@ -56,8 +72,8 @@ export default class App extends Vue {
 );
 `;
   private settings: string = `[setting.enemy]
-position = { x = 0.5, y = 0.25 }  # area size: 1.0 x 1.0
-rotationDeg = 90  # clockwise, 0: right direction
+position = { x = 0.25, y = 0 }  # area size: 1.0 x 1.0. x: upper, y: right
+rotationDeg = 180  # clockwise, 0: upper direction
 
 [[setting.enemy.muzzles]]
 name = 'center-muzzle'
@@ -90,8 +106,8 @@ rotationDeg = 0
   private onNavChanged(newId: string): void {
     // Apply setting and code when viewer was open
     if (newId === 'play') {
-      (this.$refs.viewer as Viewer).updateGunTreeCode(this.code);
       (this.$refs.viewer as Viewer).updateSettings(this.settings);
+      (this.$refs.viewer as Viewer).updateGunTreeCode(this.code);
     }
   }
 }

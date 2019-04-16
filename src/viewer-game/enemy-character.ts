@@ -3,6 +3,8 @@ import * as mat from 'transformation-matrix';
 import { IGun, IPlayer, IMuzzle, Player } from 'guntree';
 import { Muzzle } from './muzzle';
 import { IMuzzleSetting } from '../settings-interface';
+import { PlayerCharacter } from './player-character';
+import { Field } from './field';
 
 export class EnemyCharacter extends ex.Actor {
   public muzzles: Muzzle[];
@@ -10,7 +12,7 @@ export class EnemyCharacter extends ex.Actor {
   private stockedSeconds: number;
   private frameSeconds: number;
 
-  constructor(config?: ex.IActorArgs) {
+  constructor(private readonly field: Field, private readonly target: PlayerCharacter, config?: ex.IActorArgs) {
     super(config);
     this.collisionType = ex.CollisionType.Passive;
     this.color = ex.Color.Magenta;
@@ -24,7 +26,7 @@ export class EnemyCharacter extends ex.Actor {
 
       // Update firing
       if (this.player !== null && this.player.isRunning) {
-        this.stockedSeconds += event.delta;
+        this.stockedSeconds += event.delta / (10 ** 3);
         while (this.stockedSeconds >= this.frameSeconds) {
           this.stockedSeconds -= this.frameSeconds;
           this.player.tick();
@@ -33,35 +35,17 @@ export class EnemyCharacter extends ex.Actor {
     });
   }
 
-  public updateMuzzles(muzzleSettings: IMuzzleSetting[], game: ex.Engine, fieldUnit: number): void {
-    const enemyTrans = mat.transform(
-      mat.translate(this.x, this.y),
-      mat.rotate(this.rotation),
-      mat.scale(fieldUnit),
-    );
-
+  public updateMuzzles(muzzleSettings: IMuzzleSetting[], game: ex.Engine, field: Field): void {
     this.muzzles.map((mzl) => game.remove(mzl));
-
     this.muzzles = muzzleSettings.map((muzzleSetting) => {
-      const loc = mat.applyToPoint(enemyTrans, muzzleSetting.position);
-      const size = Math.min(
-        game.halfDrawWidth,
-        game.halfCanvasHeight,
-      ) / 12;
-      const rotation = this.rotation + (muzzleSetting.rotationDeg / 180 * Math.PI);
-      const muzzle = new Muzzle(muzzleSetting.name, {
-        rotation,
-        width: size,
-        height: size,
-        ...loc,
-      });
+      const muzzle = this.createMuzzle(muzzleSetting, field);
       game.add(muzzle);
       return muzzle;
     });
   }
 
   public setGuntree(gun: IGun): void {
-    const muzzle: {[key: string]: IMuzzle} = {};
+    const muzzle: { [key: string]: IMuzzle } = {};
     this.muzzles.map((mzl) => muzzle[mzl.name] = mzl);
     this.player = new Player({ muzzle });
     this.player.setGunTree(gun);
@@ -71,5 +55,28 @@ export class EnemyCharacter extends ex.Actor {
     if (this.player === null) { return; }
     this.stockedSeconds = 0;
     this.player.start();
+  }
+
+  private createMuzzle(muzzleSetting: IMuzzleSetting, field: Field): Muzzle {
+    const selfLocInField = field.canvasToFieldPoint(this);
+    const selfTransInField = mat.transform(
+      mat.translate(selfLocInField.x, selfLocInField.y),
+      mat.rotate(this.rotation),
+    );
+
+    const locInField = mat.applyToPoint(selfTransInField, muzzleSetting.position);
+    const loc = field.fieldToCanvasPoint(locInField);
+    const size = Math.min(
+      field.scale / 2,
+      field.scale / 2,
+    ) / 12;
+    const rotation = this.rotation;
+    const muzzle = new Muzzle(muzzleSetting.name, this.field, this.target, {
+      rotation,
+      width: size,
+      height: size,
+      ...loc,
+    });
+    return muzzle;
   }
 }
