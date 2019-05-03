@@ -1,6 +1,6 @@
 import * as ex from 'excalibur';
 import * as mat from 'transformation-matrix';
-import { IGun, IPlayer, IMuzzle, Player } from 'guntree';
+import { Gun, Player, Muzzle as GTMuzzle, createDefaultPlayer } from 'guntree';
 import { Muzzle } from './muzzle';
 import { IMuzzleSetting } from '../settings-interface';
 import { PlayerCharacter } from './player-character';
@@ -8,7 +8,7 @@ import { Field } from './field';
 
 export class EnemyCharacter extends ex.Actor {
   public muzzles: Muzzle[];
-  private player: IPlayer | null;
+  private player: Player | null;
   private stockedSeconds: number;
   private frameSeconds: number;
 
@@ -44,10 +44,10 @@ export class EnemyCharacter extends ex.Actor {
     });
   }
 
-  public setGuntree(gun: IGun): void {
-    const muzzle: { [key: string]: IMuzzle } = {};
+  public setGuntree(gun: Gun): void {
+    const muzzle: { [key: string]: GTMuzzle } = {};
     this.muzzles.map((mzl) => muzzle[mzl.name] = mzl);
-    this.player = new Player({ muzzle });
+    this.player = createDefaultPlayer(muzzle);
     this.player.setGunTree(gun);
   }
 

@@ -1,11 +1,11 @@
 import * as ex from 'excalibur';
 import * as mat from 'transformation-matrix';
-import { IFireData, IBullet, decomposeTransform, IMuzzle } from 'guntree';
+import { FireData, Bullet as GTBullet, decomposeTransform, Muzzle as GTMuzzle } from 'guntree';
 import { Bullet } from './bullet';
 import { PlayerCharacter } from './player-character';
 import { Field } from './field';
 
-export class Muzzle extends ex.Actor implements IMuzzle {
+export class Muzzle extends ex.Actor implements GTMuzzle {
   private bulletPool: Bullet[];
 
   constructor(
@@ -20,7 +20,7 @@ export class Muzzle extends ex.Actor implements IMuzzle {
     this.bulletPool = [];
   }
 
-  public fire(data: IFireData, bullet: IBullet) {
+  public fire(data: FireData, bullet: GTBullet) {
     const [locInField, angleDeg, scale] = decomposeTransform(data.transform);
     const location = this.field.fieldToCanvasPoint(locInField);
     const speed = data.parameters.get('speed');

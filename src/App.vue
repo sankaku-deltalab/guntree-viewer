@@ -65,12 +65,12 @@ export default class App extends Vue {
   private code: string = `concat(
   useMuzzle('center-muzzle'),
   useVirtualMuzzle(aimingMuzzle()),
-  addTranslation(0.1, 0),
+  addTranslation({ x: 0.1 }),
   repeat(
     { times: 10, interval: 4, name: 'rep' },
     nWay(
       { ways: 9, totalAngle: linear(90, 360, 'rep') },
-      addTranslation(-0.2, 0),
+      addTranslation({ x: -0.2 }),
       fire({}),
     ),
   ),
