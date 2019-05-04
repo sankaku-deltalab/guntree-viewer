@@ -1,34 +1,10 @@
 # guntree-viewer
 
-## Project setup
-```
-yarn install
-```
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+GunTree is readable and extendable Danmaku describing package for shmups.
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+[API](https://sankaku-deltalab.gitlab.io/guntree)
 
-### Run your tests
-```
-yarn run test
-```
+[Repository](https://github.com/sankaku-deltalab/guntree)
 
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Run your unit tests
-```
-yarn run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[Play ground](https://sankaku-deltalab.gitlab.io/guntree-viewer)
