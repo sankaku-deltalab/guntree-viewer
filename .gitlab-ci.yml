@@ -12,12 +12,12 @@ pages:
   only:
     - master
   before_script:
-    - 'yarn config set cache-folder .yarn'
-    - 'yarn install'
+    - yarn config set cache-folder .yarn
+    - yarn install
   script:
-    - 'yarn build'
-    - 'rm -rf public'
-    - 'cp -pr dist public'
+    - yarn build
+    - mv public public-vue
+    - mv dist public
   artifacts:
     paths:
       - public
