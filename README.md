@@ -1,6 +1,5 @@
 # guntree-viewer
 
-
 GunTree is readable and extendable Danmaku describing package for shmups.
 
 [API](https://sankaku-deltalab.gitlab.io/guntree)
