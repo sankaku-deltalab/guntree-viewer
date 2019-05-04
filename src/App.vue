@@ -75,7 +75,7 @@ export default class App extends Vue {
     nWay(
       { ways: 9, totalAngle: linear(90, 360, 'rep') },
       addTranslation({ x: -0.2 }),
-      fire({}),
+      fire(bullet()),
     ),
   ),
 );
