@@ -1,0 +1,14 @@
+image: node:latest
+pages:
+  stage: deploy
+  only:
+    - master
+  before_script:
+    - 'yarn config set cache-folder .yarn'
+    - 'yarn install'
+  script:
+    - 'yarn build'
+    - 'cp -pr dist public'
+  artifacts:
+    paths:
+      - public
