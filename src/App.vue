@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <v-content>
-      <p v-show="activeId === 'home'">Home</p>
+      <p v-show="activeId === 'home'">
+        <Home></Home>
+      </p>
       <Viewer v-show="activeId === 'play'" ref="viewer"></Viewer>
       <TextEditor
         v-show="activeId === 'code'"
@@ -50,11 +52,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import Home from './components/Home.vue';
 import Viewer from './components/Viewer.vue';
 import TextEditor from './components/TextEditor.vue';
 
 @Component({
   components: {
+    Home,
     Viewer,
     TextEditor,
   },
