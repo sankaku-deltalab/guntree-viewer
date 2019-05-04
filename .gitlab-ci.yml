@@ -12,9 +12,10 @@ pages:
   only:
     - master
   before_script:
-    - 'npm install'
+    - 'yarn config set cache-folder .yarn'
+    - 'yarn install'
   script:
-    - 'npm build'
+    - 'yarn build'
     - 'cp -pr dist public'
   artifacts:
     paths:
