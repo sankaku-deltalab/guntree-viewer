@@ -16,6 +16,7 @@ pages:
     - 'yarn install'
   script:
     - 'yarn build'
+    - 'rm -rf public'
     - 'cp -pr dist public'
   artifacts:
     paths:
