@@ -33,6 +33,10 @@ export class GameManager {
       if (!(event instanceof ex.Input.PointerEvent)) { return; }
       this.touchInput.touchAt(event.screenPos);
     });
+    this.game.input.pointers.primary.on('up', (event) => {
+      if (!(event instanceof ex.Input.PointerEvent)) { return; }
+      this.touchInput.unTouchAt(event.screenPos);
+    });
     this.game.input.pointers.primary.on('move', (event) => {
       if (!(event instanceof ex.Input.PointerEvent)) { return; }
       this.touchInput.moveTo(event.screenPos);
