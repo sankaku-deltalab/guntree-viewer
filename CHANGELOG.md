@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2019-05-04
+### Changed
+- Update CI setting
+- Update dependencies
+
 ## [0.1.0] - 2019-05-04
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/sankaku-deltalab/guntree-viewer/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/sankaku-deltalab/guntree-viewer/compare/0.1.1...HEAD
+[0.1.1]: https://github.com/sankaku-deltalab/guntree-viewer/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/sankaku-deltalab/guntree-viewer/releases/tag/0.1.0
