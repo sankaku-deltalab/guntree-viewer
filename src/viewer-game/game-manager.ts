@@ -4,9 +4,11 @@ import { PlayerCharacter } from './player-character';
 import { EnemyCharacter } from './enemy-character';
 import { ISettings, IEnemySetting } from '../settings-interface';
 import { evalGunTree } from './guntree-evaluator';
+import { TouchInput } from './touch-input';
 
 export class GameManager {
   private game: ex.Engine;
+  private touchInput: TouchInput;
   private field: Field;
   private playerCharacter: PlayerCharacter;
   private enemy: EnemyCharacter;
@@ -24,6 +26,17 @@ export class GameManager {
       suppressConsoleBootMessage: true,
     });
     document.getElementById = originalGetter;
+
+    // Create touch input
+    this.touchInput = this.createTouchInput(this.game);
+    this.game.input.pointers.primary.on('down', (event) => {
+      if (!(event instanceof ex.Input.PointerEvent)) { return; }
+      this.touchInput.touchAt(event.screenPos);
+    });
+    this.game.input.pointers.primary.on('move', (event) => {
+      if (!(event instanceof ex.Input.PointerEvent)) { return; }
+      this.touchInput.moveTo(event.screenPos);
+    });
 
     // Create game coordinates
     // leftUpper: { x: 0.5, y: -0.5 }
@@ -81,6 +94,16 @@ export class GameManager {
   public updateGunTreeCode(code: string): void {
     const gt = evalGunTree(code);
     this.enemy.setGuntree(gt);
+  }
+
+  private createTouchInput(game: ex.Engine): TouchInput {
+    const touchEvent = (pos: ex.Vector): void => {
+      this.enemy.startFiring();
+    };
+    const moveEvent = (delta: ex.Vector): void => {
+      this.playerCharacter.rawMove(delta);
+    };
+    return new TouchInput(touchEvent, moveEvent);
   }
 
   private updateEnemySetting(setting: IEnemySetting): void {

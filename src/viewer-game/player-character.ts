@@ -22,6 +22,11 @@ export class PlayerCharacter extends ex.Actor {
     this.input.y += input.y;
   }
 
+  public rawMove(inputDelta: { x: number, y: number }): void {
+    this.x += inputDelta.x;
+    this.y += inputDelta.y;
+  }
+
   private consumeInput(): { x: number, y: number } {
     const input = this.input;
     this.input = { x: 0, y: 0 };
