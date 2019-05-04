@@ -26,10 +26,10 @@ export class GameManager {
     document.getElementById = originalGetter;
 
     // Create game coordinates
-    // leftUpper: { x: 0, y: 0 }
-    // rightUpper: { x: 1, y: 0 }
-    // rightUnder: { x: 1, y: 1 }
-    this.field = new Field({ x: canvas.width, y: canvas.height });
+    // leftUpper: { x: 0.5, y: -0.5 }
+    // rightUpper: { x: 0.5, y: 0.5 }
+    // rightUnder: { x: -0.5, y: 0.5 }
+    this.field = new Field({ x: this.game.drawWidth, y: this.game.drawHeight });
 
     // Draw field area
     this.game.add(this.createField());
